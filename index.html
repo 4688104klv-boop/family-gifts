@@ -1,0 +1,570 @@
+<title>Подарки Дружной семьи</title>
+<meta name="description" content="Общий список новогодних подарков для семьи — с сюрпризом.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FBF7EF;
+    --surface: #FFFFFF;
+    --ink: #241F1A;
+    --muted: #8C8172;
+    --border: #E9E1D0;
+    --accent: #A93226;
+    --accent-ink: #FFFFFF;
+    --pine: #2F4A3C;
+    --pine-ink: #F3EFE4;
+    --free: #2F7A52;
+    --free-bg: #E5F3EA;
+    --taken: #A93226;
+    --taken-bg: #FBEAE7;
+    --gold: #B08A3E;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1A1712;
+      --surface: #24201A;
+      --ink: #F1EAE0;
+      --muted: #A79C8B;
+      --border: #3A3427;
+      --accent: #E0685A;
+      --accent-ink: #1A1712;
+      --pine: #3E5F4C;
+      --pine-ink: #F1EAE0;
+      --free: #6FBF8E;
+      --free-bg: #1E2E24;
+      --taken: #E0685A;
+      --taken-bg: #302120;
+      --gold: #D4B369;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1A1712;
+    --surface: #24201A;
+    --ink: #F1EAE0;
+    --muted: #A79C8B;
+    --border: #3A3427;
+    --accent: #E0685A;
+    --accent-ink: #1A1712;
+    --pine: #3E5F4C;
+    --pine-ink: #F1EAE0;
+    --free: #6FBF8E;
+    --free-bg: #1E2E24;
+    --taken: #E0685A;
+    --taken-bg: #302120;
+    --gold: #D4B369;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+    padding-inline: 16px;
+    padding-block: 28px 60px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.7em, 5vw, 2.1em);
+    text-align: center;
+    margin: 0 0 4px 0;
+    color: var(--accent);
+    text-wrap: balance;
+  }
+  .subtitle { text-align: center; color: var(--muted); font-size: 0.92em; margin-bottom: 18px; }
+  .status { text-align: center; color: var(--muted); font-size: 0.8em; margin-bottom: 14px; min-height: 1.2em; }
+  .status.warn { color: var(--taken); font-weight: 600; }
+  .whoami-bar { text-align: center; font-size: 0.85em; color: var(--muted); margin-bottom: 18px; }
+  .whoami-bar a, .status a { color: var(--accent); cursor: pointer; text-decoration: underline; }
+
+  .my-section { background: var(--surface); border: 1px solid var(--gold); border-radius: 16px; padding: 18px; margin-bottom: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  .my-section h2 { font-family: "Fraunces", serif; font-weight: 600; margin: 0 0 4px 0; font-size: 1.1em; color: var(--accent); }
+  .my-section .hint { font-size: 0.82em; color: var(--muted); margin: 0 0 12px 0; }
+  .my-list { list-style: none; padding: 0; margin: 0 0 12px 0; }
+  .my-list li { display: flex; justify-content: space-between; align-items: flex-start; padding: 9px 0; border-bottom: 1px dashed var(--border); gap: 8px; }
+  .my-list li:last-child { border-bottom: none; }
+  .my-empty { font-size: 0.85em; color: var(--muted); font-style: italic; }
+
+  .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 4px; scrollbar-width: thin; }
+  .tab-wrap { position: relative; display: inline-flex; align-items: center; flex-shrink: 0; }
+  .tab {
+    flex-shrink: 0; padding: 8px 16px; border-radius: 999px; background: var(--surface);
+    border: 1px solid var(--border); color: var(--ink); font-family: inherit; font-size: 0.9em;
+    cursor: pointer; white-space: nowrap; transition: background 0.15s, color 0.15s;
+  }
+  .tab:hover { border-color: var(--accent); }
+  .tab.active { background: var(--pine); border-color: var(--pine); color: var(--pine-ink); font-weight: 600; }
+  .tab.add-tab { background: transparent; border: 1px dashed var(--muted); color: var(--muted); }
+  .tab.add-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-del { background: none; border: none; color: inherit; opacity: 0.5; cursor: pointer; font-size: 0.85em; margin-left: 6px; padding: 0; line-height: 1; }
+  .tab-del:hover { opacity: 1; }
+  .tab-del.confirming { color: var(--gold); opacity: 1; font-weight: 700; }
+
+  .add-person-inline { display: none; gap: 8px; margin-bottom: 18px; }
+  .add-person-inline.show { display: flex; }
+  .add-person-inline input { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.95em; background: var(--surface); color: var(--ink); font-family: inherit; }
+
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 24px; }
+  .table-head { display: flex; background: var(--pine); color: var(--pine-ink); font-size: 0.8em; font-weight: 600; padding: 12px 14px; letter-spacing: 0.02em; }
+  .col-gift { flex: 2.2; }
+  .col-link { flex: 1.1; }
+  .col-comment { flex: 1.6; }
+  .col-status { flex: 1.2; text-align: right; }
+
+  .gift-row { display: flex; align-items: center; padding: 12px 14px; border-bottom: 1px solid var(--border); font-size: 0.92em; }
+  .gift-row:last-child { border-bottom: none; }
+  .gift-row:hover .row-remove { opacity: 1; }
+  .col-gift .gift-name-text { font-weight: 600; }
+  .col-link a { color: var(--accent); text-decoration: none; font-size: 0.9em; }
+  .col-link a:hover { text-decoration: underline; }
+  .col-comment { color: var(--muted); font-size: 0.9em; }
+  .col-status { display: flex; justify-content: flex-end; }
+
+  .status-badge { display: inline-block; padding: 5px 12px; border-radius: 999px; font-size: 0.78em; font-weight: 600; cursor: pointer; user-select: none; border: none; font-family: inherit; }
+  .status-badge.free { background: var(--free-bg); color: var(--free); }
+  .status-badge.taken { background: var(--taken-bg); color: var(--taken); }
+  .status-badge:disabled { opacity: 0.6; cursor: default; }
+
+  .row-remove { opacity: 0; transition: opacity 0.15s; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1em; margin-left: 8px; flex-shrink: 0; }
+  .row-remove:hover { color: var(--accent); }
+  .empty-table { padding: 26px 14px; text-align: center; color: var(--muted); font-size: 0.9em; font-style: italic; }
+
+  .add-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px; background: var(--bg); }
+  .add-row input { padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 0.88em; background: var(--surface); color: var(--ink); font-family: inherit; }
+  .add-row .f-name { flex: 1.6; min-width: 140px; }
+  .add-row .f-link { flex: 1; min-width: 120px; }
+  .add-row .f-comment { flex: 1.4; min-width: 140px; }
+  .add-row button { background: var(--free); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 0.9em; cursor: pointer; font-family: inherit; }
+  .add-row button:hover { opacity: 0.9; }
+
+  .no-people { text-align: center; color: var(--muted); margin-top: 30px; font-size: 0.9em; }
+
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 16px; }
+  .modal-box { background: var(--surface); border-radius: 16px; padding: 24px; max-width: 340px; width: 100%; text-align: center; border: 1px solid var(--border); }
+  .modal-box h2 { font-family: "Fraunces", serif; margin-top: 0; font-size: 1.2em; color: var(--accent); }
+  .modal-options { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; max-height: 260px; overflow-y: auto; }
+  .modal-options button { padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--ink); cursor: pointer; font-size: 1em; font-family: inherit; }
+  .modal-options button:hover { border-color: var(--accent); }
+  .modal-new { display: flex; gap: 6px; margin-top: 10px; }
+  .modal-new input { flex: 1; padding: 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--ink); font-family: inherit; }
+  .modal-new-btn { background: var(--accent); color: var(--accent-ink); border: none; border-radius: 6px; padding: 8px 12px; cursor: pointer; font-family: inherit; }
+
+  .center-notice { text-align: center; color: var(--muted); margin-top: 60px; font-size: 0.95em; padding: 0 20px; }
+
+  @media (max-width: 480px) {
+    .col-comment { display: none; }
+    .table-head .col-comment { display: none; }
+  }
+</style>
+
+<div class="wrap">
+  <h1>🎄 Подарки Дружной семьи</h1>
+  <div class="subtitle">Список видят все — не пишите сюда пожелания для себя же :)</div>
+  <div class="status" id="status">Подключение...</div>
+  <div class="whoami-bar" id="whoamiBar" style="display:none;"></div>
+
+  <div id="mainArea" style="display:none;">
+    <div id="mySection"></div>
+    <div class="tabs" id="tabs"></div>
+    <div class="add-person-inline" id="addPersonInline">
+      <input type="text" id="newPersonInput" placeholder="Имя нового человека">
+      <button id="addPersonBtn" style="background:var(--accent);color:var(--accent-ink);border:none;border-radius:8px;padding:9px 16px;cursor:pointer;font-family:inherit;">Добавить</button>
+    </div>
+    <div id="tableArea"></div>
+    <div class="no-people" id="noPeople" style="display:none;">Пока никого нет. Добавьте первого человека через вкладку «+» выше 👆</div>
+  </div>
+
+  <div id="unavailableNotice" class="center-notice" style="display:none;"></div>
+  <div id="identityModal"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://cdn.jsdelivr.net/npm/firebase@10/app/+esm";
+import {
+  getFirestore, collection, doc, addDoc, setDoc, updateDoc, deleteDoc,
+  onSnapshot, getDocs
+} from "https://cdn.jsdelivr.net/npm/firebase@10/firestore/+esm";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAJwYRWZArWQoSDLABpnheUfUkY8fM9LL8",
+  authDomain: "klv-31530.firebaseapp.com",
+  projectId: "klv-31530",
+  storageBucket: "klv-31530.firebasestorage.app",
+  messagingSenderId: "444524529668",
+  appId: "1:444524529668:web:dda059449097d4646ccd51",
+  measurementId: "G-BLJQYFQC44"
+};
+
+let db = null;
+let myPersonId = null;      // which "people" doc represents me
+let peopleList = [];        // [{id, name}]
+let giftsByPerson = {};     // personId -> [{id, name, link, comment, bought}]
+let activePersonId = null;
+
+let unsubPeople = null;
+let unsubGiftsActive = null;
+let unsubGiftsMine = null;
+let currentGiftsSubPersonId = null;
+let currentMineSubPersonId = null;
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str == null ? '' : String(str);
+  return div.innerHTML;
+}
+function lsGet(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+function lsSet(key, val) { try { localStorage.setItem(key, val); } catch (e) {} }
+function lsDel(key) { try { localStorage.removeItem(key); } catch (e) {} }
+
+/* ---------- Boot ---------- */
+async function boot() {
+  const statusEl = document.getElementById('status');
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+  } catch (e) {
+    db = null;
+  }
+
+  if (!db) {
+    statusEl.textContent = '';
+    const notice = document.getElementById('unavailableNotice');
+    notice.style.display = 'block';
+    notice.textContent = 'Не удалось подключиться к общему списку. Проверьте интернет-соединение и обновите страницу.';
+    return;
+  }
+
+  statusEl.textContent = 'Список общий для всей семьи';
+  document.getElementById('mainArea').style.display = 'block';
+
+  myPersonId = lsGet('gifts-my-person-id');
+
+  subscribePeople();
+  render();
+}
+
+/* ---------- People (top-level collection) ---------- */
+function subscribePeople() {
+  if (unsubPeople) unsubPeople();
+  unsubPeople = onSnapshot(collection(db, 'people'), (snap) => {
+    peopleList = snap.docs.map(d => ({ id: d.id, name: (d.data() || {}).name || '' }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+    render();
+  }, (err) => {
+    document.getElementById('status').textContent = 'Ошибка синхронизации: ' + err.code;
+  });
+}
+
+/* ---------- Identity (local to this browser/device) ---------- */
+function setIdentity(personId) {
+  myPersonId = personId;
+  lsSet('gifts-my-person-id', personId);
+  render();
+}
+function forgetIdentity() {
+  myPersonId = null;
+  lsDel('gifts-my-person-id');
+  render();
+}
+
+/* ---------- Gifts subcollections ---------- */
+function subscribeGiftsForActive(personId) {
+  if (unsubGiftsActive && currentGiftsSubPersonId === personId) return;
+  if (unsubGiftsActive) { unsubGiftsActive(); unsubGiftsActive = null; }
+  currentGiftsSubPersonId = personId;
+  if (!personId) return;
+  unsubGiftsActive = onSnapshot(collection(db, 'people', personId, 'gifts'), (snap) => {
+    giftsByPerson[personId] = snap.docs.map(d => ({ id: d.id, ...(d.data() || {}) }));
+    render();
+  }, () => {});
+}
+function subscribeGiftsForMine(personId) {
+  if (unsubGiftsMine && currentMineSubPersonId === personId) return;
+  if (unsubGiftsMine) { unsubGiftsMine(); unsubGiftsMine = null; }
+  currentMineSubPersonId = personId;
+  if (!personId) return;
+  unsubGiftsMine = onSnapshot(collection(db, 'people', personId, 'gifts'), (snap) => {
+    giftsByPerson[personId] = snap.docs.map(d => ({ id: d.id, ...(d.data() || {}) }));
+    render();
+  }, () => {});
+}
+
+/* ---------- Mutations ---------- */
+async function addPerson() {
+  const input = document.getElementById('newPersonInput');
+  const name = input.value.trim();
+  if (!name) return;
+  try {
+    const ref = await addDoc(collection(db, 'people'), { name });
+    input.value = '';
+    document.getElementById('addPersonInline').classList.remove('show');
+    activePersonId = ref.id;
+  } catch (e) {
+    document.getElementById('status').textContent = 'Не удалось добавить (' + e.code + ')';
+  }
+}
+async function addPersonAsMe() {
+  const nameInput = document.getElementById('modalNewName');
+  const name = nameInput.value.trim();
+  if (!name) return;
+  try {
+    const ref = await addDoc(collection(db, 'people'), { name });
+    setIdentity(ref.id);
+  } catch (e) {
+    document.getElementById('status').textContent = 'Не удалось добавить (' + e.code + ')';
+  }
+}
+
+let pendingDeleteId = null;
+let pendingDeleteTimer = null;
+
+async function removePerson(personId) {
+  try {
+    const sub = collection(db, 'people', personId, 'gifts');
+    const snap = await getDocs(sub);
+    for (const d of snap.docs) {
+      await deleteDoc(doc(db, 'people', personId, 'gifts', d.id));
+    }
+    await deleteDoc(doc(db, 'people', personId));
+    if (myPersonId === personId) forgetIdentity();
+  } catch (e) {
+    document.getElementById('status').textContent = 'Не удалось удалить (' + e.code + ')';
+  }
+}
+
+async function addGift(personId, nameInput, linkInput, commentInput) {
+  const name = nameInput.value.trim();
+  if (!name) return;
+  const link = linkInput ? linkInput.value.trim() : '';
+  const comment = commentInput ? commentInput.value.trim() : '';
+  try {
+    await addDoc(collection(db, 'people', personId, 'gifts'), { name, link, comment, bought: false });
+    nameInput.value = '';
+    if (linkInput) linkInput.value = '';
+    if (commentInput) commentInput.value = '';
+  } catch (e) {
+    document.getElementById('status').textContent = 'Не удалось добавить подарок (' + e.code + ')';
+  }
+}
+async function removeGift(personId, giftId) {
+  try {
+    await deleteDoc(doc(db, 'people', personId, 'gifts', giftId));
+  } catch (e) {
+    document.getElementById('status').textContent = 'Не удалось удалить (' + e.code + ')';
+  }
+}
+async function toggleBought(personId, giftId, current) {
+  try {
+    await updateDoc(doc(db, 'people', personId, 'gifts', giftId), { bought: !current });
+  } catch (e) {
+    document.getElementById('status').textContent = 'Не удалось изменить статус (' + e.code + ')';
+  }
+}
+
+/* ---------- Identity modal ---------- */
+function renderIdentityModal() {
+  const modalRoot = document.getElementById('identityModal');
+  if (myPersonId !== null) { modalRoot.innerHTML = ''; return; }
+  const optionsHtml = peopleList.map(p => `<button data-id="${p.id}">${escapeHtml(p.name)}</button>`).join('');
+  modalRoot.innerHTML = `
+    <div class="modal-overlay">
+      <div class="modal-box">
+        <h2>Ты кто из списка? 🎅</h2>
+        <p style="font-size:0.85em;color:var(--muted);">Нужно, чтобы скрыть от тебя твой же список — для сюрприза. Выбор запомнится только в этом браузере.</p>
+        <div class="modal-options">${optionsHtml || '<p style="font-size:0.85em;color:var(--muted);">Список пока пуст</p>'}</div>
+        <div class="modal-new">
+          <input type="text" id="modalNewName" placeholder="Меня нет в списке">
+          <button class="modal-new-btn" id="modalNewBtn">Я это</button>
+        </div>
+      </div>
+    </div>`;
+  modalRoot.querySelectorAll('.modal-options button').forEach(btn => {
+    btn.onclick = () => setIdentity(btn.getAttribute('data-id'));
+  });
+  const newBtn = document.getElementById('modalNewBtn');
+  const newInput = document.getElementById('modalNewName');
+  newBtn.onclick = addPersonAsMe;
+  newInput.onkeydown = (e) => { if (e.key === 'Enter') addPersonAsMe(); };
+}
+
+function renderWhoamiBar() {
+  const bar = document.getElementById('whoamiBar');
+  if (myPersonId === null) { bar.style.display = 'none'; return; }
+  const me = peopleList.find(p => p.id === myPersonId);
+  bar.style.display = 'block';
+  bar.innerHTML = me
+    ? `Ты: <strong>${escapeHtml(me.name)}</strong> — <a id="switchIdentity">сменить</a>`
+    : `<a id="switchIdentity">выбрать, кто ты</a>`;
+  const link = document.getElementById('switchIdentity');
+  if (link) link.onclick = forgetIdentity;
+}
+
+/* ---------- My section ---------- */
+function renderMySection() {
+  const root = document.getElementById('mySection');
+  if (!myPersonId) { root.innerHTML = ''; subscribeGiftsForMine(null); return; }
+  subscribeGiftsForMine(myPersonId);
+  const gifts = giftsByPerson[myPersonId] || [];
+
+  const itemsHtml = gifts.length ? gifts.map(g => `
+      <li>
+        <div>
+          <div style="font-weight:600;">${escapeHtml(g.name)}</div>
+          ${g.link ? `<a href="${escapeHtml(g.link)}" target="_blank" rel="noopener noreferrer" style="font-size:0.85em;color:var(--accent);text-decoration:none;">🔗 Ссылка</a>` : ''}
+          ${g.comment ? `<div style="font-size:0.85em;color:var(--muted);margin-top:2px;">${escapeHtml(g.comment)}</div>` : ''}
+        </div>
+        <button class="row-remove" style="opacity:1;" data-gift="${g.id}">✕</button>
+      </li>`).join('') : `<p class="my-empty">Ты пока ничего не вписал(а)</p>`;
+
+  root.innerHTML = `
+    <div class="my-section">
+      <h2>🎁 Твои пожелания</h2>
+      <p class="hint">Остальные видят этот список и могут выбрать, что подарить. Ты не видишь статус «забронировано» — сюрприз!</p>
+      <ul class="my-list">${itemsHtml}</ul>
+      <div class="add-row" style="border-radius:10px;">
+        <input class="f-name" type="text" id="myGiftName" placeholder="Название подарка">
+        <input class="f-link" type="text" id="myGiftLink" placeholder="Ссылка (необязательно)">
+        <input class="f-comment" type="text" id="myGiftComment" placeholder="Комментарий (необязательно)">
+        <button id="myGiftBtn">Добавить</button>
+      </div>
+    </div>`;
+  root.querySelectorAll('.row-remove').forEach(btn => {
+    btn.onclick = () => removeGift(myPersonId, btn.getAttribute('data-gift'));
+  });
+  const nameInput = document.getElementById('myGiftName');
+  const linkInput = document.getElementById('myGiftLink');
+  const commentInput = document.getElementById('myGiftComment');
+  const submit = () => addGift(myPersonId, nameInput, linkInput, commentInput);
+  document.getElementById('myGiftBtn').onclick = submit;
+  [nameInput, linkInput, commentInput].forEach(inp => { inp.onkeydown = (e) => { if (e.key === 'Enter') submit(); }; });
+}
+
+/* ---------- Tabs + table ---------- */
+function renderTabs(visiblePeople) {
+  const tabsEl = document.getElementById('tabs');
+  tabsEl.innerHTML = '';
+  visiblePeople.forEach(p => {
+    const wrap = document.createElement('span');
+    wrap.className = 'tab-wrap';
+
+    const tab = document.createElement('button');
+    tab.className = 'tab' + (p.id === activePersonId ? ' active' : '');
+    tab.textContent = p.name;
+    tab.onclick = () => { activePersonId = p.id; document.getElementById('addPersonInline').classList.remove('show'); render(); };
+
+    const del = document.createElement('button');
+    del.className = 'tab-del' + (pendingDeleteId === p.id ? ' confirming' : '');
+    del.textContent = pendingDeleteId === p.id ? 'точно?' : '✕';
+    del.title = 'Удалить человека';
+    del.onclick = (e) => {
+      e.stopPropagation();
+      if (pendingDeleteId === p.id) {
+        clearTimeout(pendingDeleteTimer);
+        pendingDeleteId = null;
+        removePerson(p.id);
+      } else {
+        pendingDeleteId = p.id;
+        clearTimeout(pendingDeleteTimer);
+        pendingDeleteTimer = setTimeout(() => { pendingDeleteId = null; render(); }, 3000);
+        render();
+      }
+    };
+
+    wrap.appendChild(tab);
+    wrap.appendChild(del);
+    tabsEl.appendChild(wrap);
+  });
+  const addTab = document.createElement('button');
+  addTab.className = 'tab add-tab';
+  addTab.textContent = '+ добавить';
+  addTab.onclick = () => {
+    document.getElementById('addPersonInline').classList.toggle('show');
+    document.getElementById('newPersonInput').focus();
+  };
+  tabsEl.appendChild(addTab);
+}
+
+function renderTable(visiblePeople) {
+  const area = document.getElementById('tableArea');
+  const noPeople = document.getElementById('noPeople');
+
+  if (peopleList.length === 0) { area.innerHTML = ''; subscribeGiftsForActive(null); noPeople.style.display = 'block'; return; }
+  noPeople.style.display = 'none';
+
+  if (visiblePeople.length === 0) {
+    subscribeGiftsForActive(null);
+    area.innerHTML = `<p class="no-people">Пока в списке только ты — дождись, пока добавятся остальные.</p>`;
+    return;
+  }
+
+  if (!visiblePeople.find(p => p.id === activePersonId)) {
+    activePersonId = visiblePeople[0].id;
+  }
+  const person = visiblePeople.find(p => p.id === activePersonId);
+  subscribeGiftsForActive(person.id);
+  const gifts = giftsByPerson[person.id] || [];
+
+  const rowsHtml = gifts.length ? gifts.map(g => `
+      <div class="gift-row">
+        <div class="col-gift"><span class="gift-name-text">${escapeHtml(g.name)}</span></div>
+        <div class="col-link">${g.link ? `<a href="${escapeHtml(g.link)}" target="_blank" rel="noopener noreferrer">Открыть</a>` : ''}</div>
+        <div class="col-comment">${escapeHtml(g.comment || '')}</div>
+        <div class="col-status">
+          <button class="status-badge ${g.bought ? 'taken' : 'free'}" data-gift="${g.id}" data-bought="${g.bought ? '1' : '0'}">${g.bought ? 'Забронировано' : 'Свободно'}</button>
+        </div>
+        <button class="row-remove" data-remove="${g.id}">✕</button>
+      </div>`).join('') : `<div class="empty-table">Идей пока нет</div>`;
+
+  area.innerHTML = `
+    <div class="table-card">
+      <div class="table-head">
+        <div class="col-gift">Подарок</div>
+        <div class="col-link">Ссылка</div>
+        <div class="col-comment">Комментарий</div>
+        <div class="col-status">Статус</div>
+      </div>
+      ${rowsHtml}
+      <div class="add-row">
+        <input class="f-name" type="text" id="giftName" placeholder="Название подарка">
+        <input class="f-link" type="text" id="giftLink" placeholder="Ссылка (необязательно)">
+        <input class="f-comment" type="text" id="giftComment" placeholder="Комментарий (необязательно)">
+        <button id="giftAddBtn">Добавить</button>
+      </div>
+    </div>`;
+
+  area.querySelectorAll('.status-badge').forEach(btn => {
+    btn.onclick = () => toggleBought(person.id, btn.getAttribute('data-gift'), btn.getAttribute('data-bought') === '1');
+  });
+  area.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.onclick = () => removeGift(person.id, btn.getAttribute('data-remove'));
+  });
+  const nameInput = document.getElementById('giftName');
+  const linkInput = document.getElementById('giftLink');
+  const commentInput = document.getElementById('giftComment');
+  const submit = () => addGift(person.id, nameInput, linkInput, commentInput);
+  document.getElementById('giftAddBtn').onclick = submit;
+  [nameInput, linkInput, commentInput].forEach(inp => { inp.onkeydown = (e) => { if (e.key === 'Enter') submit(); }; });
+}
+
+/* ---------- Main render ---------- */
+function render() {
+  renderIdentityModal();
+  renderWhoamiBar();
+  renderMySection();
+  const visiblePeople = peopleList.filter(p => p.id !== myPersonId);
+  renderTabs(visiblePeople);
+  renderTable(visiblePeople);
+}
+
+document.getElementById('addPersonBtn').onclick = addPerson;
+document.getElementById('newPersonInput').onkeydown = (e) => { if (e.key === 'Enter') addPerson(); };
+
+boot();
+</script>
